@@ -35,10 +35,8 @@ impl Solution {
                 total += Solution::to_int(curr);
                 continue;
             }
-            break;
+            return total;
         }
-
-        return total;
     }
 }
 
