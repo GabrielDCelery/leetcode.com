@@ -24,7 +24,7 @@ impl Solution {
         while remaining > 0 {
             for pair in num_sym_pairs.iter() {
                 if remaining >= pair.0 {
-                    solution = format!("{}{}", solution, pair.1);
+                    solution += pair.1;
                     remaining -= pair.0;
                     break;
                 }
