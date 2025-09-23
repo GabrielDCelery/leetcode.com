@@ -18,50 +18,59 @@ impl Solution {
         l1: Option<Box<ListNode>>,
         l2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
-        let l1_as_num = Solution::ll_to_int(&l1, 0, None);
-        let l2_as_num = Solution::ll_to_int(&l2, 0, None);
-        let target_number = l1_as_num + l2_as_num;
-        Solution::int_to_ll(target_number)
+        return Solution::combine_lls(l1, l2, 0);
     }
 
-    fn ll_to_int(ll: &Option<Box<ListNode>>, mut acc: i32, level: Option<u32>) -> i32 {
-        if let Some(node) = ll {
-            let curr_level = level.unwrap_or(0);
-            acc += node.val * 10_i32.pow(curr_level);
-            let next_level = curr_level + 1;
-            Solution::ll_to_int(&node.next, acc, Some(next_level))
-        } else {
-            acc
+    fn combine_lls(
+        l1: Option<Box<ListNode>>,
+        l2: Option<Box<ListNode>>,
+        carriover: i32,
+    ) -> Option<Box<ListNode>> {
+        match (l1, l2) {
+            (Some(l1), Some(l2)) => {
+                let total = l1.val + l2.val + carriover;
+                let node_value = total % 10;
+                let next_carriover = if total > node_value { 1 } else { 0 };
+                Some(Box::new(ListNode {
+                    val: node_value,
+                    next: Solution::combine_lls(l1.next, l2.next, next_carriover),
+                }))
+            }
+            (Some(l1), None) => {
+                let total = l1.val + carriover;
+                let node_value = total % 10;
+                let next_carriover = if total > node_value { 1 } else { 0 };
+                Some(Box::new(ListNode {
+                    val: node_value,
+                    next: Solution::combine_lls(l1.next, None, next_carriover),
+                }))
+            }
+            (None, Some(l2)) => {
+                let total = l2.val + carriover;
+                let node_value = total % 10;
+                let next_carriover = if total > node_value { 1 } else { 0 };
+                Some(Box::new(ListNode {
+                    val: node_value,
+                    next: Solution::combine_lls(None, l2.next, next_carriover),
+                }))
+            }
+            (None, None) => {
+                if carriover > 0 {
+                    Some(Box::new(ListNode {
+                        val: carriover,
+                        next: None,
+                    }))
+                } else {
+                    None
+                }
+            }
         }
-    }
-
-    fn int_to_ll(num: i32) -> Option<Box<ListNode>> {
-        let digit = num % 10;
-        let mut curr_node = Box::new(ListNode::new(digit));
-        let remaining = (num - digit) / 10;
-        if remaining != 0 {
-            curr_node.next = Solution::int_to_ll(remaining);
-        }
-        Some(curr_node)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::add_two_numbers::{ListNode, Solution};
-
-    #[test]
-    fn convert_single_digit_to_ll() {
-        // Given
-        let num = 9;
-        let expected = Some(Box::new(ListNode::new(9)));
-
-        // When
-        let result = Solution::int_to_ll(num);
-
-        // Then
-        assert_eq!(result, expected);
-    }
 
     #[test]
     fn case_1() {
