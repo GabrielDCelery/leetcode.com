@@ -2,25 +2,25 @@ struct Solution {}
 
 impl Solution {
     pub fn longest_common_prefix(strs: Vec<String>) -> String {
-        let mut shortest = strs.get(0).unwrap_or(&String::new()).clone();
+        let mut common = strs.get(0).unwrap_or(&String::new()).clone();
 
         for current in strs.iter() {
-            shortest = Solution::longest_common_for_two_words(&shortest, current);
+            common = Solution::longest_common_for_two_words(&common, current);
         }
 
-        return shortest;
+        return common;
     }
 
     fn longest_common_for_two_words(first: &String, second: &String) -> String {
-        let mut shortest = String::new();
+        let mut common = String::new();
         for (c1, c2) in first.chars().zip(second.chars()) {
             if c1 == c2 {
-                shortest.push_str(c1.to_string().as_str());
+                common.push_str(c1.to_string().as_str());
             } else {
                 break;
             }
         }
-        return shortest;
+        return common;
     }
 }
 
