@@ -2,7 +2,7 @@ struct Solution {}
 
 impl Solution {
     pub fn longest_palindrome(s: String) -> String {
-        let mut longest_slice_idxs = [0, 0];
+        let mut longest_segment_idxs = [0, 0];
         let letters: Vec<char> = s.chars().collect();
         for i in 0..letters.len() {
             for j in 0..letters.len() {
@@ -13,7 +13,7 @@ impl Solution {
                 }
                 // if the current index pair we are looking at is shorter than the longest pair
                 // then even if it is a palindrome it won't be longer
-                let longest_length = longest_slice_idxs[1] - longest_slice_idxs[0];
+                let longest_length = longest_segment_idxs[1] - longest_segment_idxs[0];
                 let curr_length = j - i;
                 if curr_length <= longest_length {
                     continue;
@@ -23,11 +23,11 @@ impl Solution {
                     continue;
                 }
                 // if palindrome replace with the longer option
-                longest_slice_idxs = [i, j];
+                longest_segment_idxs = [i, j];
             }
         }
         // convert slice of letters back to a string
-        return letters[longest_slice_idxs[0]..=longest_slice_idxs[1]]
+        return letters[longest_segment_idxs[0]..=longest_segment_idxs[1]]
             .into_iter()
             .collect();
     }
