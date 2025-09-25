@@ -11,7 +11,7 @@ impl Solution {
                 if j <= i {
                     continue;
                 }
-                // is the current index pair we are looking at is shorter than the longest pair
+                // if the current index pair we are looking at is shorter than the longest pair
                 // then even if it is a palindrome it won't be longer
                 let longest_length = longest_slice_idxs[1] - longest_slice_idxs[0];
                 let curr_length = j - i;
