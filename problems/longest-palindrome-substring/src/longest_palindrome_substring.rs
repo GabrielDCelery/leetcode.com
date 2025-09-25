@@ -22,11 +22,11 @@ impl Solution {
                 if !Solution::is_segment_palindrome(&letters, i, j) {
                     continue;
                 }
-                // if palindrome replace with the longer option
+                // if palindrome replace current with the longer option
                 longest_segment_idxs = [i, j];
             }
         }
-        // convert slice of letters back to a string
+        // convert slice of chars back to a string
         return letters[longest_segment_idxs[0]..=longest_segment_idxs[1]]
             .into_iter()
             .collect();
