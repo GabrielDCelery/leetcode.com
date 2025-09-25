@@ -33,20 +33,18 @@ impl Solution {
     }
 
     fn is_segment_palindrome(chars: &Vec<char>, i: usize, j: usize) -> bool {
-        let mut p1 = i;
-        let mut p2 = j;
-        loop {
-            if p2 < p1 {
-                return true;
-            }
-            let c1 = chars[p1];
-            let c2 = chars[p2];
-            if c1 != c2 {
+        let mut left = i;
+        let mut right = j;
+
+        while left < right {
+            if chars[left] != chars[right] {
                 return false;
             }
-            p1 = p1 + 1;
-            p2 = if p2 == 0 { 0 } else { p2 - 1 }
+            left += 1;
+            right -= 1;
         }
+
+        true
     }
 }
 
