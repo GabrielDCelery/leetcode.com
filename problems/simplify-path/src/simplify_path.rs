@@ -10,7 +10,9 @@ impl Solution {
                     ".." => {
                         acc.pop();
                     }
-                    _ => acc.push(path_component),
+                    _ => {
+                        acc.push(path_component);
+                    }
                 };
                 acc
             });
