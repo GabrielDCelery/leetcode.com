@@ -2,14 +2,13 @@ struct Solution {}
 
 impl Solution {
     pub fn simplify_path(path: String) -> String {
-        let path_components: Vec<&str> = path
-            .split("/")
-            .filter(|&s| !s.is_empty() && s != ".")
-            .fold(Vec::new(), |mut acc, path_component| {
+        let path_components: Vec<&str> =
+            path.split("/").fold(Vec::new(), |mut acc, path_component| {
                 match path_component {
                     ".." => {
                         acc.pop();
                     }
+                    "" | "." => (),
                     _ => {
                         acc.push(path_component);
                     }
