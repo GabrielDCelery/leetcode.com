@@ -1,7 +1,39 @@
 struct Solution {}
 
 impl Solution {
-    pub fn is_valid(s: String) -> bool {}
+    pub fn is_valid(s: String) -> bool {
+        let mut stack: Vec<char> = vec![];
+
+        for c in s.chars() {
+            match c {
+                '(' | '[' | '{' => stack.push(c),
+                ')' => {
+                    if stack.last() == Some(&'(') {
+                        stack.pop();
+                    } else {
+                        stack.push(c);
+                    }
+                }
+                ']' => {
+                    if stack.last() == Some(&'[') {
+                        stack.pop();
+                    } else {
+                        stack.push(c);
+                    }
+                }
+                '}' => {
+                    if stack.last() == Some(&'{') {
+                        stack.pop();
+                    } else {
+                        stack.push(c);
+                    }
+                }
+                _ => panic!("Unhandled character {c}"),
+            }
+        }
+
+        return stack.len() == 0;
+    }
 }
 
 #[cfg(test)]
@@ -64,6 +96,19 @@ mod tests {
     fn case_5() {
         //Given
         let s = String::from("([)]");
+        let expected = false;
+
+        //When
+        let result = Solution::is_valid(s);
+
+        //Then
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn case_6() {
+        //Given
+        let s = String::from("]");
         let expected = false;
 
         //When
