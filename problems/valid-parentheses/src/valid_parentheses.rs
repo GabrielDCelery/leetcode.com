@@ -8,24 +8,18 @@ impl Solution {
             match c {
                 '(' | '[' | '{' => stack.push(c),
                 ')' => {
-                    if stack.last() == Some(&'(') {
-                        stack.pop();
-                    } else {
-                        stack.push(c);
+                    if stack.pop() != Some('(') {
+                        return false;
                     }
                 }
                 ']' => {
-                    if stack.last() == Some(&'[') {
-                        stack.pop();
-                    } else {
-                        stack.push(c);
+                    if stack.pop() != Some('[') {
+                        return false;
                     }
                 }
                 '}' => {
-                    if stack.last() == Some(&'{') {
-                        stack.pop();
-                    } else {
-                        stack.push(c);
+                    if stack.pop() != Some('{') {
+                        return false;
                     }
                 }
                 _ => panic!("Unhandled character {c}"),
