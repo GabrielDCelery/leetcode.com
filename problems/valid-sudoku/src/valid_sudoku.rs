@@ -62,8 +62,8 @@ impl Solution {
                         if *cell == '.' {
                             continue;
                         }
-                        if let Some(cell) = map.get(cell) {
-                            if *cell {
+                        if let Some(v) = map.get(cell) {
+                            if *v {
                                 return false;
                             }
                         }
