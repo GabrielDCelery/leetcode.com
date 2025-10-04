@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 struct Solution {}
 
@@ -10,69 +10,45 @@ impl Solution {
     }
 
     fn are_rows_valid(board: &Vec<Vec<char>>) -> bool {
-        for row_idx in 0..9 {
-            let mut map: HashMap<char, bool> = HashMap::new();
-            for cell in board.get(row_idx).unwrap() {
-                if *cell == '.' {
-                    continue;
+        for row in board {
+            let mut seen = HashSet::new();
+            for &cell in row {
+                if cell != '.' && !seen.insert(cell) {
+                    return false;
                 }
-
-                if let Some(v) = map.get(cell) {
-                    if *v {
-                        return false;
-                    }
-                }
-                map.insert(*cell, true);
             }
         }
-
-        return true;
+        true
     }
 
     fn are_columns_valid(board: &Vec<Vec<char>>) -> bool {
         for col_idx in 0..9 {
-            let mut map: HashMap<char, bool> = HashMap::new();
-
+            let mut seen = HashSet::new();
             for row in board {
-                let cell = row.get(col_idx).unwrap();
-
-                if *cell == '.' {
-                    continue;
+                let cell = row[col_idx];
+                if cell != '.' && !seen.insert(cell) {
+                    return false;
                 }
-                if let Some(v) = map.get(cell) {
-                    if *v {
-                        return false;
-                    }
-                }
-                map.insert(*cell, true);
             }
         }
-
-        return true;
+        true
     }
 
     fn are_sub_boxes_valid(board: &Vec<Vec<char>>) -> bool {
         for offset_y in [0, 3, 6] {
             for offset_x in [0, 3, 6] {
-                let mut map: HashMap<char, bool> = HashMap::new();
-
+                let mut seen = HashSet::new();
                 for y in 0..3 {
                     for x in 0..3 {
-                        let cell = board.get(y + offset_y).unwrap().get(x + offset_x).unwrap();
-                        if *cell == '.' {
-                            continue;
+                        let cell = board[y + offset_y][x + offset_x];
+                        if cell != '.' && !seen.insert(cell) {
+                            return false;
                         }
-                        if let Some(v) = map.get(cell) {
-                            if *v {
-                                return false;
-                            }
-                        }
-                        map.insert(*cell, true);
                     }
                 }
             }
         }
-        return true;
+        true
     }
 }
 
