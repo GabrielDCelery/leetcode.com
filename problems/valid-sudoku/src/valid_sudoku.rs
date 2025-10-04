@@ -1,8 +1,78 @@
+use std::collections::HashMap;
+
 struct Solution {}
 
 impl Solution {
     pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
-        true
+        return Solution::are_rows_valid(&board)
+            && Solution::are_columns_valid(&board)
+            && Solution::are_sub_boxes_valid(&board);
+    }
+
+    fn are_rows_valid(board: &Vec<Vec<char>>) -> bool {
+        for row_idx in 0..9 {
+            let mut map: HashMap<char, bool> = HashMap::new();
+            for x in board.get(row_idx).unwrap() {
+                if *x == '.' {
+                    continue;
+                }
+
+                if let Some(cell) = map.get(x) {
+                    if *cell {
+                        return false;
+                    }
+                }
+                map.insert(*x, true);
+            }
+        }
+
+        return true;
+    }
+
+    fn are_columns_valid(board: &Vec<Vec<char>>) -> bool {
+        for col_idx in 0..9 {
+            let mut map: HashMap<char, bool> = HashMap::new();
+
+            for row in board {
+                let y = row.get(col_idx).unwrap();
+
+                if *y == '.' {
+                    continue;
+                }
+                if let Some(cell) = map.get(y) {
+                    if *cell {
+                        return false;
+                    }
+                }
+                map.insert(*y, true);
+            }
+        }
+
+        return true;
+    }
+
+    fn are_sub_boxes_valid(board: &Vec<Vec<char>>) -> bool {
+        for offset_y in [0, 3, 6] {
+            for offset_x in [0, 3, 6] {
+                let mut map: HashMap<char, bool> = HashMap::new();
+
+                for y in 0..3 {
+                    for x in 0..3 {
+                        let cell = board.get(y + offset_y).unwrap().get(x + offset_x).unwrap();
+                        if *cell == '.' {
+                            continue;
+                        }
+                        if let Some(cell) = map.get(cell) {
+                            if *cell {
+                                return false;
+                            }
+                        }
+                        map.insert(*cell, true);
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
 
