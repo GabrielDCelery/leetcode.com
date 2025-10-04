@@ -12,17 +12,17 @@ impl Solution {
     fn are_rows_valid(board: &Vec<Vec<char>>) -> bool {
         for row_idx in 0..9 {
             let mut map: HashMap<char, bool> = HashMap::new();
-            for x in board.get(row_idx).unwrap() {
-                if *x == '.' {
+            for cell in board.get(row_idx).unwrap() {
+                if *cell == '.' {
                     continue;
                 }
 
-                if let Some(cell) = map.get(x) {
-                    if *cell {
+                if let Some(v) = map.get(cell) {
+                    if *v {
                         return false;
                     }
                 }
-                map.insert(*x, true);
+                map.insert(*cell, true);
             }
         }
 
@@ -34,17 +34,17 @@ impl Solution {
             let mut map: HashMap<char, bool> = HashMap::new();
 
             for row in board {
-                let y = row.get(col_idx).unwrap();
+                let cell = row.get(col_idx).unwrap();
 
-                if *y == '.' {
+                if *cell == '.' {
                     continue;
                 }
-                if let Some(cell) = map.get(y) {
-                    if *cell {
+                if let Some(v) = map.get(cell) {
+                    if *v {
                         return false;
                     }
                 }
-                map.insert(*y, true);
+                map.insert(*cell, true);
             }
         }
 
