@@ -39,31 +39,67 @@ impl Board {
     fn solve(&mut self) {
         loop {
             let hashed_before_cycle = self.hash();
+
             for row_idx in 0..9 {
                 for col_idx in 0..9 {
                     if self.is_cell_solved(row_idx, col_idx) {
                         continue;
                     }
 
-                    let mut nums_to_eliminate: Vec<u8> = self
-                        .get_all_solved_for_row(row_idx)
-                        .into_iter()
-                        .chain(self.get_all_solved_for_col(col_idx))
-                        .chain(self.get_all_solved_for_box(row_idx, col_idx))
-                        .collect();
-
-                    nums_to_eliminate.sort();
-                    nums_to_eliminate.dedup();
-
-                    self.eliminate(row_idx, col_idx, nums_to_eliminate);
-                    self.set_cell_to_solved_if_can(row_idx, col_idx);
+                    if self.try_solving_cell_using_obvious_single_strategy(row_idx, col_idx) {
+                        continue;
+                    }
                 }
             }
-            let hashed_after_cycle = self.hash();
-            if hashed_before_cycle == hashed_after_cycle {
+
+            if hashed_before_cycle != self.hash() {
+                continue;
+            }
+
+            for row_idx in 0..9 {
+                for col_idx in 0..9 {
+                    if self.is_cell_solved(row_idx, col_idx) {
+                        continue;
+                    }
+
+                    if self.try_solving_cell_using_hidden_single_strategy(row_idx, col_idx) {
+                        continue;
+                    }
+                }
+            }
+
+            // We either solved the board or did not manage to solve any more cells
+            if hashed_before_cycle == self.hash() {
                 break;
             }
         }
+    }
+
+    fn try_solving_cell_using_obvious_single_strategy(
+        &mut self,
+        row_idx: usize,
+        col_idx: usize,
+    ) -> bool {
+        let mut nums_to_eliminate: Vec<u8> = self
+            .get_all_solved_for_row(row_idx)
+            .into_iter()
+            .chain(self.get_all_solved_for_col(col_idx))
+            .chain(self.get_all_solved_for_box(row_idx, col_idx))
+            .collect();
+
+        nums_to_eliminate.sort();
+        nums_to_eliminate.dedup();
+
+        self.eliminate(row_idx, col_idx, nums_to_eliminate);
+        self.set_cell_to_solved_if_can(row_idx, col_idx)
+    }
+
+    fn try_solving_cell_using_hidden_single_strategy(
+        &mut self,
+        row_idx: usize,
+        col_idx: usize,
+    ) -> bool {
+        return true;
     }
 
     fn is_cell_solved(&self, row_idx: usize, col_idx: usize) -> bool {
