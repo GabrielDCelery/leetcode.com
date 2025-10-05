@@ -40,14 +40,17 @@ impl Board {
                         continue;
                     }
 
-                    self.eliminate(row_idx, col_idx, self.get_all_solved_for_row(row_idx));
-                    self.eliminate(row_idx, col_idx, self.get_all_solved_for_col(col_idx));
-                    self.eliminate(
-                        row_idx,
-                        col_idx,
-                        self.get_all_solved_for_box(row_idx, col_idx),
-                    );
+                    let mut nums_to_eliminate: Vec<u8> = self
+                        .get_all_solved_for_row(row_idx)
+                        .into_iter()
+                        .chain(self.get_all_solved_for_col(col_idx))
+                        .chain(self.get_all_solved_for_box(row_idx, col_idx))
+                        .collect();
 
+                    nums_to_eliminate.sort();
+                    nums_to_eliminate.dedup();
+
+                    self.eliminate(row_idx, col_idx, nums_to_eliminate);
                     self.set_cell_to_solved_if_can(row_idx, col_idx);
                 }
             }
