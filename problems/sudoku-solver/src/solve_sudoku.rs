@@ -3,6 +3,22 @@ struct Cell {
     solution: u8,
 }
 
+impl Cell {
+    fn new(value: char) -> Self {
+        if value == '.' {
+            Cell {
+                candidates: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
+                solution: 0,
+            }
+        } else {
+            Cell {
+                candidates: vec![],
+                solution: value.to_digit(10).unwrap() as u8,
+            }
+        }
+    }
+}
+
 struct Board {
     cells: Vec<Vec<Cell>>,
 }
@@ -10,21 +26,10 @@ struct Board {
 impl Board {
     fn new(board: &mut Vec<Vec<char>>) -> Self {
         let mut cells = Vec::new();
-        for row in 0..9 {
+        for row_idx in 0..9 {
             let mut cell_row = Vec::new();
-            for col in 0..9 {
-                let cell = if board[row][col] == '.' {
-                    Cell {
-                        candidates: vec![1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        solution: 0,
-                    }
-                } else {
-                    Cell {
-                        candidates: vec![],
-                        solution: board[row][col].to_digit(10).unwrap() as u8,
-                    }
-                };
-                cell_row.push(cell);
+            for col_idx in 0..9 {
+                cell_row.push(Cell::new(board[row_idx][col_idx]));
             }
             cells.push(cell_row);
         }
