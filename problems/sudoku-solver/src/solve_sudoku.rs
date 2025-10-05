@@ -121,9 +121,11 @@ impl Board {
 
     fn get_all_solved_for_box(&self, row_idx: usize, col_idx: usize) -> Vec<u8> {
         let mut solved = vec![];
+        let box_start_row = (row_idx / 3) * 3;
+        let box_start_col = (col_idx / 3) * 3;
         for x in 0..3 {
             for y in 0..3 {
-                let cell = &self.cells[row_idx / 3 + x][col_idx / 3 + y];
+                let cell = &self.cells[box_start_row + x][box_start_col + y];
                 if cell.solution == 0 {
                     continue;
                 }
