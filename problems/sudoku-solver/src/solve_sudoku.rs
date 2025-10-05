@@ -1,3 +1,54 @@
+struct Cell {
+    candidates: Vec<u8>,
+    solution: u8,
+}
+
+struct Board {
+    cells: Vec<Vec<Cell>>,
+}
+
+impl Board {
+    fn get_all_solved_for_row(&self, row_idx: usize) -> Vec<u8> {
+        let mut solved = vec![];
+        for cell in self.cells.get(row_idx).unwrap() {
+            if cell.solution == 0 {
+                continue;
+            }
+            solved.push(cell.solution);
+        }
+        return solved;
+    }
+
+    fn get_all_solved_for_col(&self, col_idx: usize) -> Vec<u8> {
+        let mut solved = vec![];
+        for row in self.cells.iter() {
+            let cell = row.get(col_idx).unwrap();
+            if cell.solution == 0 {
+                continue;
+            }
+            solved.push(cell.solution);
+        }
+        return solved;
+    }
+
+    fn get_all_solved_for_box(&self, row_idx: usize, col_idx: usize) -> Vec<u8> {
+        let mut solved = vec![];
+        let offset_x = row_idx / 3;
+        let offset_y = col_idx / 3;
+        for y in 0..3 {
+            for x in 0..3 {
+                let row = self.cells.get(offset_x + x).unwrap();
+                let cell = row.get(offset_y + y).unwrap();
+                if cell.solution == 0 {
+                    continue;
+                }
+                solved.push(cell.solution);
+            }
+        }
+        return solved;
+    }
+}
+
 struct Solution {}
 
 impl Solution {
