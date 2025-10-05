@@ -41,7 +41,7 @@ impl Board {
                     }
 
                     self.eliminate(row_idx, col_idx, self.get_all_solved_for_row(row_idx));
-                    self.eliminate(row_idx, col_idx, self.get_all_solved_for_col(row_idx));
+                    self.eliminate(row_idx, col_idx, self.get_all_solved_for_col(col_idx));
                     self.eliminate(
                         row_idx,
                         col_idx,
